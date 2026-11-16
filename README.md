@@ -1,68 +1,62 @@
 # FocusHacks
 
-## Inspiration
-Studies show that approximately 80%–95% of university students engage in procrastination to some degree, and about half procrastinate in a consistent and problematic manner[[1]](#citations). 50% of students do not get to make the most out of their day because they get distracted, and FocusHacks is here to change all of that. This web application uses Machine Learning to visually track when the user loses focus, and sends a reminder/motivational quote through email to get back on track, and make the best out of their day. 
+A web app that uses your webcam and a machine learning model to notice when you lose focus while studying, then emails you a reminder to get back on track. Built at NewHacks 2021.
 
-## What it does
-### 1. Enhances user’s productivity
-* FocusHacks helps users reduce distractions and increase productivity. 
-* With its machine learning model, FocusHacks could detect when the user is being productive and when he/she is not. 
-* If the user gets distracted and is not focusing on his/her work, FocusHacks would send the user an email, reminding and motivating the user to get back to work.
+<!-- Add a screenshot or demo GIF here, e.g. ![demo](docs/demo.gif) -->
 
-### 2. Protects online privacy
-* The technology of FocusHacks could be further applied in virtual classrooms.
-* FocusHacks detects when students are trying to take photos of the virtual classroom with his/her cellphone.  
-* If the student is violating the privacy policy during remote learning, warning emails would be sent to both the student and the teacher.
+## Features
 
-## How we built it
-* Machine Learning model: Tensorflow 
-* Frontend: HTML5, CSS3 and JavaScript
-* Backend: Node.js, Express.js
-* API service for sending emails: Twilio SendGrid
+- Classifies webcam frames in real time as **Focused**, **Not Focused**, or **Violating Privacy**
+- Tracks a running focus score and pauses tracking once it runs out
+- Sends a reminder email with a motivational message when you've been distracted too long
+- Detects when someone points a phone at the screen during a virtual class and emails a warning to both the student and the teacher
+- Pause and resume tracking at any time
 
+## How it works
 
+```
+Webcam ──▶ TensorFlow.js + Teachable Machine model (browser) ──▶ focus / risk scores
+                                                                       │ threshold reached
+                                                                       ▼
+                                       Express server (/email, /warning) ──▶ Twilio SendGrid ──▶ inbox
+```
 
-## Challenges we ran into
-* Machine Learning model needing more training data 
-* Collaborating with different time zones 
-* Wifi cutting out accidentally
+The model was trained with Google's Teachable Machine and runs entirely in the browser through TensorFlow.js. Each prediction updates a focus score, which drops while you're classified as "Not Focused", and a risk score, which drops on confident "Violating Privacy" predictions. When either reaches zero, the page pauses tracking and calls the Express backend, which sends the appropriate email through Twilio SendGrid.
 
+## Tech stack
 
-## Accomplishments that we're proud of
-* Built a Machine Learning model that could classifies user's behaviours, and detects users’ behaviours when they are not focusing on their work or violating the privacy policy
-* Capable of sending email reminders to users promptly when the Machine Learning model has detected the users not being focus on their work
+- **ML:** TensorFlow.js, Teachable Machine (image model)
+- **Frontend:** HTML5, CSS3, Bootstrap 5, JavaScript
+- **Backend:** Node.js, Express
+- **Email:** Twilio SendGrid
 
+## Results
 
-## What we learned
-* Collaborating with people with different backgrounds, skills and experiences 
-* Using Git for collaboration and version control
-* Building a Tensorflow model
-* Using Twilio's API to send emails to users
-* Building a web app with both frontend and backend technology
+- Real-time focus classification and email alerts working end to end in the browser
+<!-- Add any award or placement from NewHacks 2021 here -->
 
+## Running it locally
 
-## What's next for FocusHacks
-* Using Auth0 to register and authenticate users to use our service
-* Creating a more powerful machine learning model that could identify more classes
-* Creating a mobile app where you can see your performance data 
-* Using Twilio’s communication API’s to far greater levels for user communication to be even more effective
-* Storing our data in database such as PostgreSQL, MongoDB or Firebase
+1. Clone and install:
+   ```bash
+   git clone https://github.com/Ibrahimkasiim1/FocusHacks.git
+   cd FocusHacks
+   npm install
+   ```
+2. Copy `sendgrid-template.env` to `sendgrid.env` and fill in your SendGrid API key, name, and email addresses. Change the sender in `sendGrid.js` to a sender verified in your SendGrid account.
+3. Start the server and open [http://localhost:8080](http://localhost:8080):
+   ```bash
+   node index.js
+   ```
 
+## Team
+
+Built at NewHacks 2021 by:
+
+- [Peter Hui](https://github.com/HSKPeter): ML integration, focus tracking, email service
+- [Ibrahim Kasim](https://github.com/Ibrahimkasiim1): HTML template, UI and styling
+- [Mustafa Abdulrahman](https://github.com/Mustaballer): UI and loading states, branding
 
 ## Citations
-[1] Steel, P. (2007). The nature of procrastination: A meta-analytic and theoretical review of quintessential self-regulatory failure. Psychological Bulletin, 133(1), 65–94. [https://doi.org/10.1037/0033-2909.133.1.65](https://doi.org/10.1037/0033-2909.133.1.65)
 
-## Setup for Project Development
-1. Install npm modules
-```bash
-npm i
-```
-
-2. Create ```sendgrid.env``` following the template ```sendgrid-template.env```
-
-3. Run ```index.js``` to host the website locally
-```bash
-node index.js
-```
-
-4. Visit ```http://localhost:8080/``` in the browser
+[1] Steel, P. (2007). The nature of procrastination: A meta-analytic and theoretical review of quintessential self-regulatory failure. *Psychological Bulletin, 133*(1), 65–94. https://doi.org/10.1037/0033-2909.133.1.65
