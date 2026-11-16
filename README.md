@@ -33,6 +33,7 @@ The model was trained with Google's Teachable Machine and runs entirely in the b
 ## Results
 
 - Real-time focus classification and email alerts working end to end in the browser
+- Won Best use of Twillio API at NewHacks 2021
 <!-- Add any award or placement from NewHacks 2021 here -->
 
 ## Running it locally
@@ -54,7 +55,7 @@ The model was trained with Google's Teachable Machine and runs entirely in the b
 Built at NewHacks 2021 by:
 
 - [Peter Hui](https://github.com/HSKPeter): ML integration, focus tracking, email service
-- [Ibrahim Kasim](https://github.com/Ibrahimkasiim1): HTML template, UI and styling
+- [Ibrahim Kasim](https://github.com/Ibrahimkasiim1): HTML template, UI and styling, Tensorflow classification model
 - [Mustafa Abdulrahman](https://github.com/Mustaballer): UI and loading states, branding
 
 ## Citations
